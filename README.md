@@ -61,7 +61,14 @@ Include in script: `source <path-to-repo>/dynamic_parsers.sh`
     
      Returns: 
        A Dynamic variable based on the positional TYPE and NAME parameters.
-    
+    ````
+
+#### Testing
+
+Run `./test_parsers.sh`
+
+Edit `test_parsers` and change the `if` statments to test each function.
+
 ### Standard
 
 Filename: `std.sh`
@@ -70,4 +77,8 @@ Include in script: `source <path-to-repo>/std.sh`
 
 ### Functions
 
-See script file.
+See script file (for now).
+
+#### Testing 
+
+Run `./test_std.sh`
