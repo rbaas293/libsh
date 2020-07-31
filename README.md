@@ -9,7 +9,8 @@ Filename: `dynamic_parsers.sh`
 Include in script: `source <path-to-repo>/dynamic_parsers.sh`
 
 #### Functions
-* `parse_all_params`
+
+##### `parse_all_params`
     ```
     Parses all arguments passed to a script or function. The varables do not need to be defined beforehand.
     
@@ -57,7 +58,7 @@ Include in script: `source <path-to-repo>/dynamic_parsers.sh`
            Parses parameters and matches the parameter `-l 386`. After a match, $l = 386.
        
        `param long length $@`
-           Parses parameters and matches the parameter `--length 386`. After a match, $length = 386/
+           Parses parameters and matches the parameter `--length 386`. After a match, $length = 386
     
      Returns: 
        A Dynamic variable based on the positional TYPE and NAME parameters.
@@ -67,7 +68,7 @@ Include in script: `source <path-to-repo>/dynamic_parsers.sh`
 
 Run `./test_parsers.sh`
 
-Edit `test_parsers` and change the `if` statments to test each function.
+Edit `test_parsers.sh` and change the `if` statments to test each function.
 
 ### Standard
 
@@ -75,7 +76,7 @@ Filename: `std.sh`
 
 Include in script: `source <path-to-repo>/std.sh`
 
-### Functions
+#### Functions
 
 See script file (for now).
 
