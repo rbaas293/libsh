@@ -82,3 +82,10 @@ See script file (for now).
 #### Testing 
 
 Run `./test_std.sh`
+
+## CI/CD
+
+[shUnit2](https://github.com/kward/shunit2)
+
+GithubAction: [here](https://github.com/marketplace/actions/generate-shell-script-unit-testing)
+ 

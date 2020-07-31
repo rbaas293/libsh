@@ -7,7 +7,6 @@ parse_all_params() {
     #
     # Args:
     #   $@: Inherent form caller script/function.
-    #   --debug : Debug by displaying parameter names and values.
     #
     # Returns:
     #   Dynamic variables based on the name of passed parameters.
@@ -64,7 +63,7 @@ param() {
     #       Parses parameters and matches the parameter `-l 386`. After a match, $l = 386.
     #   
     #   `param long length $@`
-    #       Parses parameters and matches the parameter `--length 386`. After a match, $length = 386/
+    #       Parses parameters and matches the parameter `--length 386`. After a match, $length = 386
     #
     # Returns: 
     #   A Dynamic variable based on the positional TYPE and NAME parameters.

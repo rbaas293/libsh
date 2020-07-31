@@ -1,0 +1,52 @@
+#!/bin/bash
+oneTimeSetUp() {
+	SELF=$(realpath $0)
+	SELF_PARENT=$(realpath $(dirname $0))
+	REPO_ROOT=$(realpath $SELF_PARENT/../)
+
+    source $REPO_ROOT/dynamic_parsers.sh
+}
+
+setUp() {
+    foo=''
+    debug=''
+    verbose=''
+    p=''
+
+}
+
+testParse_all_params() {
+    
+    # Function under test
+	parse_all_params --debug -verbose --foo bar -p 3333 
+
+    # Tests
+    ${_ASSERT_EQUALS_} "bar" "$(echo $foo | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "yes" "$(echo $debug | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "yes" "$(echo $verbose | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "3333" "$(echo $p| tr -d '\n')"
+}
+
+
+testParam() {
+    args='--debug --verbose --foo bar -p 3333'
+    
+    # Function under Test
+    param switch debug $args
+    param switch verbose $args
+    param long foo $args
+    param short p $args
+
+    # Tests
+    ${_ASSERT_EQUALS_} "bar" "$(echo $foo | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "yes" "$(echo $debug | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "yes" "$(echo $verbose | tr -d '\n')"
+    ${_ASSERT_EQUALS_} "3333" "$(echo $p| tr -d '\n')"
+}
+
+if ! $(command -v "shunit2" >/dev/null 2>&1); then
+    echo "shunit2 must be installed."
+    exit 1
+fi
+
+. shunit2
