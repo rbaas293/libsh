@@ -20,7 +20,6 @@ Include in script: `source <path-to-repo>/dynamic_parsers.sh`
     
      Args:
        $@: Inherent form caller script/function.
-       --debug : Debug by displaying parameter names and values.
     
      Returns:
        Dynamic variables based on the name of passed parameters.
