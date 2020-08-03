@@ -3,8 +3,13 @@ name: Shell Scripts Unit Testing
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  shUnit2:
+    name: shUnit2 on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
