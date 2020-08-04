@@ -1,0 +1,71 @@
+#!/bin/bash
+RUN_LOC=local
+
+oneTimeSetUp() {
+    if expr "$OSTYPE" : 'darwin' > /dev/null; then
+        realpath() {
+            { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}"
+        }
+    fi
+
+    if [ "$RUN_LOC" = "local" ]; then
+        SELF=$(realpath $0)
+	    SELF_PARENT=$(realpath $(dirname $0))
+	    REPO_ROOT=$(realpath $SELF_PARENT/../)
+    else
+        SELF=$(realpath $0)
+	    SELF_PARENT=$(realpath $(dirname $0))
+	    REPO_ROOT="/home/runner/work/libsh/libsh"
+    fi
+
+    #echo $SELF_PARENT
+    #echo $REPO_ROOT
+    
+    source ./dynamic_parsers.sh
+}
+
+setUp() {
+    foo=''
+    debug=''
+    verbose=''
+    p=''
+
+}
+
+testParse_all_params() {
+
+    # Function under test
+	parse_all_params --debug -verbose --foo bar -p 3333
+
+    # Tests
+    assertEquals "bar" "$(echo $foo | tr -d '\n')"
+    assertEquals "yes" "$(echo $debug | tr -d '\n')"
+    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
+    assertEquals "3333" "$(echo $p| tr -d '\n')"
+}
+
+
+testParam() {
+    args='--debug --verbose --foo bar -p 3333'
+
+    # Function under Test
+    param switch debug $args
+    param switch verbose $args
+    param long foo $args
+    param short p $args
+
+    # Tests
+    assertEquals "bar" "$(echo $foo | tr -d '\n')"
+    assertEquals "yes" "$(echo $debug | tr -d '\n')"
+    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
+    assertEquals "3333" "$(echo $p| tr -d '\n')"
+}
+
+#if ! $(command -v "shunit2" >/dev/null 2>&1); then
+#    echo "shunit2 must be installed."
+#    exit 1
+#fi
+
+if [ "$RUN_LOC" = "local" ]; then
+    . shunit2 
+fi
