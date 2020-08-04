@@ -20,7 +20,7 @@ fi
 # Set true to test.
 if true
 then
-    # parse and save all parementers.
+    # parse and save all parameters.
     parse_all_params $@
     echo foo=$foo
 fi

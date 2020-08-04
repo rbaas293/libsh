@@ -75,6 +75,14 @@ checkresult() { if [ $? = 0 ]; then echo TRUE; else echo FALSE; fi; }
 
 exists() { if [ ! -z $1 ]; then true; else false; fi; }
 
+make_sh_macos_compatible() {
+    if expr "$OSTYPE" : 'darwin' > /dev/null; then
+        realpath() { 
+            { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}" 
+        }
+    fi
+}
+
 parse_all_params() {
     # Parses all arguments passed to a script or function. The varables do not need to be defined beforehand.
     #
@@ -92,9 +100,9 @@ parse_all_params() {
     define_param switch debug $@
 
     while [ $# -gt 0 ]; do
-        if expr match $1 '--' > /dev/null;then str_rm='--'; elif expr match $1 '-' > /dev/null; then str_rm='-'; fi
+        if expr $1 : '--.' > /dev/null; then str_rm='--'; elif expr $1 : '-.' > /dev/null; then str_rm='-'; fi
         name=${1#$str_rm}
-        if expr match $1 '--' > /dev/null || expr match $1 '-' > /dev/null; then
+        if expr $1 : '--.' > /dev/null || expr $1 : '-.' > /dev/null; then
             if exists $2 && ! beginswith '-' $2; then
                 value=$2
                 shift

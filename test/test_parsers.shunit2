@@ -1,5 +1,10 @@
 #!/bin/bash
 oneTimeSetUp() {
+    if expr "$OSTYPE" : 'darwin' > /dev/null; then
+        realpath() { 
+            { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}" 
+        }
+    fi
 	SELF=$(realpath $0)
 	SELF_PARENT=$(realpath $(dirname $0))
 	REPO_ROOT=$(realpath $SELF_PARENT/../)
@@ -44,9 +49,9 @@ testParam() {
     ${_ASSERT_EQUALS_} "3333" "$(echo $p| tr -d '\n')"
 }
 
-if ! $(command -v "shunit2" >/dev/null 2>&1); then
-    echo "shunit2 must be installed."
-    exit 1
-fi
+#if ! $(command -v "shunit2" >/dev/null 2>&1); then
+#    echo "shunit2 must be installed."
+#    exit 1
+#fi
 
-. shunit2
+#. shunit2

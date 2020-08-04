@@ -12,9 +12,9 @@ parse_all_params() {
     #   Dynamic variables based on the name of passed parameters.
     #
     while [ $# -gt 0 ]; do
-        if expr match $1 '--' > /dev/null;then str_rm='--'; elif expr match $1 '-' > /dev/null; then str_rm='-'; fi
+        if expr $1 : '--.' > /dev/null; then str_rm='--'; elif expr $1 : '-.' > /dev/null; then str_rm='-'; fi
         name=${1#$str_rm}
-        if expr match $1 '--' > /dev/null || expr match $1 '-' > /dev/null; then
+        if expr $1 : '--.' > /dev/null || expr $1 : '-.' > /dev/null; then
             if { if [ ! -z $2 ]; then true; else false; fi; } && ! { case $2 in "-"*) true;; *) false;; esac; }; then
                 value=$2
                 shift
