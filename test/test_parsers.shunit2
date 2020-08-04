@@ -1,14 +1,14 @@
 #!/bin/bash
 oneTimeSetUp() {
     if expr "$OSTYPE" : 'darwin' > /dev/null; then
-        realpath() { 
-            { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}" 
+        realpath() {
+            { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}"
         }
     fi
 	SELF=$(realpath $0)
 	SELF_PARENT=$(realpath $(dirname $0))
 	REPO_ROOT=$(realpath $SELF_PARENT/../)
-
+    #echo $REPO_ROOT
     source $REPO_ROOT/dynamic_parsers.sh
 }
 
@@ -21,9 +21,9 @@ setUp() {
 }
 
 testParse_all_params() {
-    
+
     # Function under test
-	parse_all_params --debug -verbose --foo bar -p 3333 
+	parse_all_params --debug -verbose --foo bar -p 3333
 
     # Tests
     ${_ASSERT_EQUALS_} "bar" "$(echo $foo | tr -d '\n')"
@@ -35,7 +35,7 @@ testParse_all_params() {
 
 testParam() {
     args='--debug --verbose --foo bar -p 3333'
-    
+
     # Function under Test
     param switch debug $args
     param switch verbose $args
@@ -54,4 +54,4 @@ testParam() {
 #    exit 1
 #fi
 
-#. shunit2
+. shunit2
