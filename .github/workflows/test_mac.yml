@@ -31,4 +31,4 @@ jobs:
       run: |
         git clone https://github.com/kward/shunit2.git /opt/shunit2 >/dev/null
         export PATH="$PATH:/opt/shunit2/"
-        $./test_parsers.shunit2
+        ./test_parsers.shunit2
