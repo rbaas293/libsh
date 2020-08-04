@@ -5,10 +5,7 @@ on: [push]
 jobs:
   shUnit2:
     name: shUnit2 on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest]
+    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout

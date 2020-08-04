@@ -1,5 +1,5 @@
 #!/bin/bash
-RUN_LOC=remote
+RUN_LOC=local
 
 oneTimeSetUp() {
     if expr "$OSTYPE" : 'darwin' > /dev/null; then
