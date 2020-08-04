@@ -1,14 +1,26 @@
 #!/bin/bash
+RUN_LOC=remote
+
 oneTimeSetUp() {
     if expr "$OSTYPE" : 'darwin' > /dev/null; then
         realpath() {
             { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}"
         }
     fi
-	SELF=$(realpath $0)
-	SELF_PARENT=$(realpath $(dirname $0))
-	REPO_ROOT=$(realpath $SELF_PARENT/../)
-    #echo $REPO_ROOT
+
+    if [ "$RUN_LOC" = "local" ]; then
+        SELF=$(realpath $0)
+	    SELF_PARENT=$(realpath $(dirname $0))
+	    REPO_ROOT=$(realpath $SELF_PARENT/../)
+    else
+        SELF=$(realpath $0)
+	    SELF_PARENT=$(realpath $(dirname $0))
+	    REPO_ROOT="/home/runner/work/libsh/libsh"
+    fi
+
+    echo $SELF_PARENT
+    echo $REPO_ROOT
+    
     source $REPO_ROOT/dynamic_parsers.sh
 }
 
@@ -26,10 +38,10 @@ testParse_all_params() {
 	parse_all_params --debug -verbose --foo bar -p 3333
 
     # Tests
-    ${_ASSERT_EQUALS_} "bar" "$(echo $foo | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "yes" "$(echo $debug | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "yes" "$(echo $verbose | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "3333" "$(echo $p| tr -d '\n')"
+    assertEquals "bar" "$(echo $foo | tr -d '\n')"
+    assertEquals "yes" "$(echo $debug | tr -d '\n')"
+    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
+    assertEquals "3333" "$(echo $p| tr -d '\n')"
 }
 
 
@@ -43,10 +55,10 @@ testParam() {
     param short p $args
 
     # Tests
-    ${_ASSERT_EQUALS_} "bar" "$(echo $foo | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "yes" "$(echo $debug | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "yes" "$(echo $verbose | tr -d '\n')"
-    ${_ASSERT_EQUALS_} "3333" "$(echo $p| tr -d '\n')"
+    assertEquals "bar" "$(echo $foo | tr -d '\n')"
+    assertEquals "yes" "$(echo $debug | tr -d '\n')"
+    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
+    assertEquals "3333" "$(echo $p| tr -d '\n')"
 }
 
 #if ! $(command -v "shunit2" >/dev/null 2>&1); then
@@ -54,4 +66,6 @@ testParam() {
 #    exit 1
 #fi
 
-. shunit2
+if [ "$RUN_LOC" = "local" ]; then
+    . shunit2 
+fi
