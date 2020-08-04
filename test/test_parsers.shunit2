@@ -18,10 +18,10 @@ oneTimeSetUp() {
 	    REPO_ROOT="/home/runner/work/libsh/libsh"
     fi
 
-    echo $SELF_PARENT
-    echo $REPO_ROOT
+    #echo $SELF_PARENT
+    #echo $REPO_ROOT
     
-    source $REPO_ROOT/dynamic_parsers.sh
+    source ./dynamic_parsers.sh
 }
 
 setUp() {
