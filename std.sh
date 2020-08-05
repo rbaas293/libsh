@@ -121,7 +121,7 @@ parse_all_params() {
     done
 }
 
-define_param() {
+param() {
     # Parses all parameters passed to a script or function for the specified TYPE and NAME given.
     # If a match is found, a dynamic variable will be created with the name of the passed parameter.
     # The valuethis parameter will be set equal to will depend on the TYPE specified.
