@@ -7,7 +7,7 @@ SELF_PARENT=$(dirname $0)
 source $SELF_PARENT/std.sh
 
 # Set true to test.
-if true
+if false
 then
     parse_all_params $@
     for i in $foo $verbose $v $debug $d $p; do
@@ -18,13 +18,17 @@ then
 fi
 
 # Set true to test.
-if false
+if true
 then
-    define_param switch debug $@
-    define_param switch verbose $@
-    define_param short foo $@
-    define_param long bazz $@
-    define_param shortlong hello $@
+    param switch debug $@
+    param switch verbose $@
+    param short foo $@
+    param long bazz $@
+    param shortlong hello $@
+
+    if [ "$debug" = yes ]; then 
+        echo "*debug=$debug" ; echo foo=$foo
+    fi
 fi
 
 # TEST for define_parm function
@@ -51,5 +55,3 @@ then
 
     error $(basename ${BASH_SOURCE[0]}) is just a test file.
 fi
-
-exit

@@ -36,7 +36,7 @@ error() {
 
 verbose() {
     for i in $verbose $VERBOSE $v $V; do
-        if expr match $i 'yes' > /dev/null; then
+        if expr $i : 'yes' > /dev/null; then
             echo ${BOLD}"$(basename $0):${RESET}${YELLOW} Verbose --> "${BOLD}"$@"${RESET}
             return
         fi
@@ -45,7 +45,7 @@ verbose() {
 
 debug() {
     for i in $debug $DEBUG $d $D; do
-        if expr match $i 'yes' > /dev/null; then
+        if expr $i : 'yes' > /dev/null; then
             echo ${BOLD}"$(basename $0):${RESET}${CYAN} Debug   --> "${BOLD}"$@"${RESET}
             return
         fi
@@ -54,8 +54,8 @@ debug() {
 
 debugg() {
     for i in $debugg; do
-        if expr match $i 'yes' > /dev/null; then
-            echo ${BOLD}"$(basename $0):${RESET}${CYAN} Debug   --> "${BOLD}"$@"${RESET}
+        if expr $i : 'yes' > /dev/null; then
+            echo ${BOLD}"$(basename $0):${RESET}${CYAN} Debugg   --> "${BOLD}"$@"${RESET}
             return
         fi
     done
@@ -76,11 +76,14 @@ checkresult() { if [ $? = 0 ]; then echo TRUE; else echo FALSE; fi; }
 exists() { if [ ! -z $1 ]; then true; else false; fi; }
 
 make_sh_macos_compatible() {
-    if expr "$OSTYPE" : 'darwin' > /dev/null; then
-        realpath() { 
+    #if expr "$OSTYPE" : 'darwin' > /dev/null; then
+    #    realpath() { 
+    #        { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}" 
+    #    }
+    #fi
+    command_exists realpath || realpath() { 
             { case $1 in "/"*) true;; *) false;; esac; } && echo "$1" || echo "$PWD/${1#./}" 
         }
-    fi
 }
 
 parse_all_params() {
@@ -185,7 +188,7 @@ param() {
                         exit 1
                     fi
 
-                IFS= read -r -d '' "$NAME" <<< 'yes';
+                IFS= read -r -d '' "$NAME" <<< 'yes'
                 debug $NAME = yes  
                 return 0
                 fi 
