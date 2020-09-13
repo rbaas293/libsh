@@ -1,3 +1,10 @@
+
+# Do not allow any parameter to overwrite an existing enviormnet variable.
+declare -a EXCLUDE=($(env | grep -P ".*(?==)" -o))
+
+#Explicitly declare paramaters to catch
+#declare -a EXCLUDE=( PATH USER HOME) 
+
 parse_all_params() {
     # Parses all arguments passed to a script or function. The varables do not need to be defined beforehand.
     #
@@ -25,7 +32,14 @@ parse_all_params() {
         #else
             #value=yes
         fi
-        
+
+        for search in ${EXCLUDE[*]}; do 
+            if [ "$name" = "$search" ]; then
+                #echo "Dynamic Varable of Parameter: $name is Not Allowed. Changing Varable Name To ${name}_param"
+                name="${name}_param"
+            fi
+        done 
+
         #echo "$name = $value"
         IFS= read -r -d '' "$name" <<< $value
         shift
@@ -85,19 +99,15 @@ param() {
                         echo error: "Switch $3 Does Not Take an Argument."
                         exit 1
                     fi
-                IFS= read -r -d '' "$NAME" <<< 'yes';
-                #echo $NAME = yes  
-                return 0
+                    VALUE='yes'
                 fi 
             } ;;
             short|string|--string|-str|str) {
                 if [ "$3" = "-$NAME" ]; then
                     if { if [ ! -z $4 ]; then true; else false; fi; } && ! { case $4 in "-"*) true;; *) false;; esac; }; then 
                         shift;
-                        argnum=$(expr $argnum + 1) ; #echo SHORT argnum=$argnum                          
-                        IFS= read -r -d '' "$NAME" <<< $3;
-                        #echo $NAME = $3 
-                        return 0                  
+                        argnum=$(expr $argnum + 1) ; #echo SHORT argnum=$argnum       
+                        VALUE="$3"                                   
                     else
                         echo error "Parameter $3 Requires an Argument."
                         exit 1
@@ -109,9 +119,7 @@ param() {
                     if { if [ ! -z $4 ]; then true; else false; fi; } && ! { case $4 in "-"*) true;; *) false;; esac; }; then 
                         shift; 
                         argnum=$(expr $argnum + 1) ; #echo LONG: argnum=$argnum 
-                        IFS= read -r -d '' "$NAME" <<< $3;
-                        #echo $NAME = $3 
-                        return 0                  
+                        VALUE="$3"                
                     else
                         echo error: "Parameter $3 Requires an Argument."
                         exit 1
@@ -123,9 +131,7 @@ param() {
                     if { if [ ! -z $4 ]; then true; else false; fi; } && ! { case $4 in "-"*) true;; *) false;; esac; }; then 
                         shift; 
                         argnum=$(expr $argnum + 1); #echo SHORTLONG: argnum=$argnum
-                        IFS= read -r -d '' "$NAME" <<< $3;
-                        #echo $NAME = $3 
-                        return 0
+                        VALUE="$3"
                     else
                     echo error "Parameter $3 Requires an Argument."
                     exit 1
@@ -133,6 +139,17 @@ param() {
                 fi
             } ;;
         esac
+        for search in ${EXCLUDE[*]}; do 
+            if [ "$NAME" = "$search" ]; then
+                #echo "Dynamic Varable of Parameter: $NAME is Not Allowed. Changing Varable Name To ${NAME}_param"
+                NAME="${NAME}_param"
+            fi
+        done 
+        if [ ! -z $VALUE ]; then
+            IFS= read -r -d '' "$NAME" <<< $VALUE;
+            #echo $NAME = $VALUE 
+            return 0 
+        fi
         shift
         argnum=$(expr $argnum + 1)
     done
