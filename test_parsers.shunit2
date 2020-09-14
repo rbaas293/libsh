@@ -21,7 +21,11 @@ oneTimeSetUp() {
     #echo $SELF_PARENT
     #echo $REPO_ROOT
     
+    args='--debug --verbose --foo bar -p 3333'
+    echo "Params: $args"
     source ./dynamic_parsers.sh
+
+
 }
 
 setUp() {
@@ -33,9 +37,9 @@ setUp() {
 }
 
 testParse_all_params() {
-
+    
     # Function under test
-	parse_all_params --debug -verbose --foo bar -p 3333
+	parse_all_params $args
 
     # Tests
     assertEquals "bar" "$(echo $foo | tr -d '\n')"

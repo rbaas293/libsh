@@ -92,6 +92,7 @@ param() {
     #echo FUNCTION_START: argnum=$argnum
     while [ $# -gt 2 ]; do 
         #echo LOOP_START: argnum=$argnum
+        VALUE=""
         case $TYPE in
             switch|--switch|-sw|sw) {
                 if [ "$3" = "-$NAME" ] || [ "$3" = "--$NAME" ]; then 
@@ -99,7 +100,7 @@ param() {
                         echo error: "Switch $3 Does Not Take an Argument."
                         exit 1
                     fi
-                    VALUE='yes'
+                    VALUE='yes' 
                 fi 
             } ;;
             short|string|--string|-str|str) {
@@ -107,7 +108,7 @@ param() {
                     if { if [ ! -z $4 ]; then true; else false; fi; } && ! { case $4 in "-"*) true;; *) false;; esac; }; then 
                         shift;
                         argnum=$(expr $argnum + 1) ; #echo SHORT argnum=$argnum       
-                        VALUE="$3"                                   
+                        VALUE="$3" 
                     else
                         echo error "Parameter $3 Requires an Argument."
                         exit 1
@@ -118,8 +119,8 @@ param() {
                 if [ "$3" = "--$NAME" ]; then
                     if { if [ ! -z $4 ]; then true; else false; fi; } && ! { case $4 in "-"*) true;; *) false;; esac; }; then 
                         shift; 
-                        argnum=$(expr $argnum + 1) ; #echo LONG: argnum=$argnum 
-                        VALUE="$3"                
+                        argnum=$(expr $argnum + 1) ; #echo LONG: argnum=$argnum
+                        VALUE="$3"
                     else
                         echo error: "Parameter $3 Requires an Argument."
                         exit 1
@@ -141,12 +142,12 @@ param() {
         esac
         for search in ${EXCLUDE[*]}; do 
             if [ "$NAME" = "$search" ]; then
-                #echo "Dynamic Varable of Parameter: $NAME is Not Allowed. Changing Varable Name To ${NAME}_param"
+                #echo "WARNING: Dynamic Varable of Parameter: $NAME is Not Allowed. Changing Varable Name To ${NAME}_param"
                 NAME="${NAME}_param"
             fi
         done 
         if [ ! -z $VALUE ]; then
-            IFS= read -r -d '' "$NAME" <<< $VALUE;
+            IFS= read -r -d '' "$NAME" <<< "$VALUE";
             #echo $NAME = $VALUE 
             return 0 
         fi
