@@ -1,6 +1,6 @@
 
 # Do not allow any parameter to overwrite an existing enviormnet variable.
-declare -a EXCLUDE=($(env | grep -P ".*(?==)" -o))
+declare -a EXCLUDE=($(env | sed -e "s/=.*//"))
 
 #Explicitly declare paramaters to catch
 #declare -a EXCLUDE=( PATH USER HOME) 
