@@ -1,6 +1,10 @@
 #!/bin/bash
 PKG=$1
 
+mkdir -p $PKG
+
+cd $PKG
+
 rm -f error.txt
 apt download $(apt-rdepends $PKG | grep -v "^ ") 2> error.txt
 #IF THERE WAS ERRORS (DEPENDENCIES NOT FOUND)
@@ -17,3 +21,5 @@ then
     eval "apt download \$(apt-rdepends $PKG | grep -v '^ ' | grep -v '^$partial_command$')"
 fi
 rm error.txt
+
+cd ..
