@@ -36,16 +36,17 @@ setUp() {
 
 }
 
+
 testParse_all_params() {
-    
+
     # Function under test
 	parse_all_params $args
 
     # Tests
-    assertEquals "bar" "$(echo $foo | tr -d '\n')"
-    assertEquals "yes" "$(echo $debug | tr -d '\n')"
-    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
-    assertEquals "3333" "$(echo $p| tr -d '\n')"
+    assertEquals "bar" "$foo"
+    assertEquals "yes" "$debug"
+    assertEquals "yes" "$verbose"
+    assertEquals "3333" "$p"
 }
 
 
@@ -59,10 +60,10 @@ testParam() {
     param short p $args
 
     # Tests
-    assertEquals "bar" "$(echo $foo | tr -d '\n')"
-    assertEquals "yes" "$(echo $debug | tr -d '\n')"
-    assertEquals "yes" "$(echo $verbose | tr -d '\n')"
-    assertEquals "3333" "$(echo $p| tr -d '\n')"
+    assertEquals "bar" "$foo"
+    assertEquals "yes" "$debug"
+    assertEquals "yes" "$verbose"
+    assertEquals "3333" "$p"
 }
 
 #if ! $(command -v "shunit2" >/dev/null 2>&1); then

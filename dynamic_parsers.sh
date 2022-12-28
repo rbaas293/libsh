@@ -41,7 +41,9 @@ parse_all_params() {
         done 
 
         #echo "$name = $value"
-        IFS= read -r -d '' "$name" <<< $value
+        #IFS= read -r -d '' "$name" <<< `echo $value | tr -d '..'`
+        #IFS= read -r "$name" <<< `echo $value | tr -d '\n'`
+        IFS= read -r "$name" <<< "$value"
         shift
     done
 }
@@ -147,7 +149,7 @@ param() {
             fi
         done 
         if [ ! -z $VALUE ]; then
-            IFS= read -r -d '' "$NAME" <<< "$VALUE";
+            IFS= read -r "$NAME" <<< "$VALUE";
             #echo $NAME = $VALUE 
             return 0 
         fi
